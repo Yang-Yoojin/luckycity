@@ -42,22 +42,40 @@
 
   </section>
 
-  <!-- 날씨 정보 섹션 -->
-  <section class="weather-section">
-    <!-- 날씨 정보 설정 박스 --><!-- 입력받은 지역을 행정동 기준으로 정리해 행정동코드 링크삽입하는 방법?-->
-    <div class="weather-controls-box">
-      <a href="https://www.weather.go.kr/w/index.do" target="_blank">기상청 바로가기</a>
-      <input type="text" placeholder="지역 설정">
-    </div>
-    
-    <!-- 아이프레임 -->
-    <div class="iframe-container">
-      <iframe src="https://www.weather.go.kr/w/index.do" title="기상청 날씨 정보"></iframe>
-    </div>
-  </section>
+  <!-- 날씨 검색 섹션 -->
+<section class="weather-section">
+  <h3>지역 검색을 통해 날씨 정보를 확인하세요</h3>
+  <div class="location-search">
+    <input id="location-input" type="text" placeholder="지역명을 입력하세요">
+    <button onclick="searchWeather()">검색</button>
+  </div>
+  
+   <!-- 날씨 아이프레임 -->
+   <div class="iframe-container" style="width: 100%; height: 800px; margin-bottom: 20px;">
+    <iframe 
+      id="weather-iframe" 
+      src="https://www.weather.go.kr/w/index.do" 
+      title="기상청 날씨 정보" 
+      frameborder="0" 
+      loading="lazy"
+      style="width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 8px;">
+    </iframe>
+  </div>
+  
+  <!-- 특보 발령 아이프레임 -->
+  <div class="iframe-container" style="width: 100%; height: 800px;">
+    <iframe 
+      id="alert-iframe" 
+      src="https://www.weather.go.kr/w/weather/warning/status.do" 
+      title="기상청 특보 발령 정보" 
+      frameborder="0" 
+      loading="lazy"
+      style="width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 8px;">
+    </iframe>
+  </div>
+</section>
 
   <script src="js/main.js"></script>
-
 
   <!-- 퀴즈 및 영상 바로가기 섹션 -->
   <div class="center-links">

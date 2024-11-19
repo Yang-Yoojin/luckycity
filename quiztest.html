@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>퀴즈 페이지</title>
-  <link rel="icon" type="image/png" href="./사진/배경투명화인사.png"/>
+  <title>겨울철 재난 안전 퀴즈</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/quiz.css">
 </head>
 <body>
-  <!-- 상단 배너 및 검색창 -->
+  <!-- 상단 헤더 -->
   <header>
     <nav class="navbar">
       <ul class="nav-left">
@@ -20,21 +20,21 @@
         <li><a href="signup.html">회원가입</a></li>
       </ul>
     </nav>
+
+    <!-- 배너 -->
+    <div class="banner">
+      <img src="./사진/크롭이미지.png" alt="배너 이미지">
+      <div class="text-overlay">
+        <h5>겨울철 재난 안전 사고 대응 퀴즈</h5>
+      </div>
+    </div>
   </header>
-  <section class="banner"><img src="./사진/크롭이미지.png" class="full">
-    <div class="text-overlay"><h5>겨울철안전사고대응및재난대피요령</h5></div></section>
-  <div class="search-bar">
-    <input type="text" placeholder="검색어를 입력하세요">
-    <button onclick="search()">검색</button>
-  </div>
 
   <!-- 메인 콘텐츠 -->
   <main class="quiz-page">
-    <!-- 중앙 퀴즈 박스 -->
     <div class="main-quiz">
       <div id="quizBox">
         <p id="quizQuestion">퀴즈 질문이 여기에 표시됩니다.</p>
-        <!-- 4지선다 선택지 버튼 -->
         <div class="options">
           <button onclick="selectAnswer(0)" class="option-btn">선택지 1</button>
           <button onclick="selectAnswer(1)" class="option-btn">선택지 2</button>
@@ -45,85 +45,16 @@
       </div>
     </div>
 
-    <!-- 오른쪽 퀴즈 목록 -->
     <aside class="quiz-list">
-      <h3>퀴즈 목록</h3>
+      <h3>퀴즈 주제</h3>
       <ul>
-        <li><a href="#" onclick="selectQuiz('love')">수학</a></li>
-        <li><a href="#" onclick="selectQuiz('friendship')">과학</a></li>
-        <li><a href="#" onclick="selectQuiz('history')">역사</a></li>
+        <li><a href="#" onclick="selectQuiz('coldwave')">한파 대처 방안</a></li>
+        <li><a href="#" onclick="selectQuiz('heavysnow')">폭설 대처 방안</a></li>
+        <li><a href="#" onclick="selectQuiz('snowaccidents')">눈길 사고 대처 방안</a></li>
       </ul>
     </aside>
   </main>
 
-  <script>
-    // 퀴즈 목록 데이터 예시
-    const quizzes = {
-      love: [
-        { question: "1 +1 = ?", options: ["2", "1", "0", "없음"], answer: 0 },
-        { question: "2 x 2 = ?", options: ["2", "3", "4", "5"], answer: 2 },
-        { question: "첫사랑에 대한 당신의 생각은?", options: ["슬픔", "기쁨", "추억", "후회"], answer: 2 }
-      ],
-      friendship: [
-        { question: "과학과 관련된 내용", options: ["오답", "오답", "정답", "오답"], answer: 2 },
-        { question: "과학과 관련된 내용", options: ["정답", "오답", "오답", "오답"], answer: 0 },
-        { question: "과학과 관련된 내용", options: ["오답", "경청", "오답", "오답"], answer: 1 }
-      ],
-      history: [
-        { question: "가장 오래된 문명은?", options: ["이집트", "메소포타미아", "인더스", "중국"], answer: 1 },
-        { question: "고대 이집트의 주요 강은?", options: ["나일 강", "황하", "인더스 강", "티그리스 강"], answer: 0 },
-        { question: "세계대전의 시작 년도는?", options: ["1914년", "1939년", "1945년", "1950년"], answer: 0 }
-      ]
-    };
-
-    let currentQuiz = quizzes.love; // 기본 퀴즈
-    let questionIndex = 0;
-
-    function selectQuiz(quizName) {
-      currentQuiz = quizzes[quizName];
-      questionIndex = 0;
-      displayQuestion();
-    }
-
-    function displayQuestion() {
-      const quiz = currentQuiz[questionIndex];
-      document.getElementById("quizQuestion").textContent = quiz.question;
-      const options = document.querySelectorAll(".option-btn");
-      options.forEach((button, index) => {
-        button.textContent = quiz.options[index];
-      });
-    }
-
-    function selectAnswer(selectedIndex) {
-      const quiz = currentQuiz[questionIndex];
-      if (selectedIndex === quiz.answer) {
-        alert("정답입니다!");
-      } else {
-        alert("틀렸습니다.");
-      }
-    }
-
-    function nextQuestion() {
-      if (questionIndex < currentQuiz.length - 1) {
-        questionIndex++;
-        displayQuestion();
-      } else {
-        alert("퀴즈가 완료되었습니다!");
-      }
-    }
-
-    // 검색 기능
-    function search() {
-      const query = document.querySelector('.search-bar input').value;
-      window.location.href = `search-results.html?query=${encodeURIComponent(query)}`;
-    }
-
-    // 페이지 로드 시 첫 번째 질문 표시
-    window.onload = displayQuestion;
-  </script>
-  
-  <div class="center-links">
-    <a href="educationVideo.html" class="btn-link">영상으로 바로가기</a>
-  </div>
-
+  <script src="js/quiz.js"></script>
+</body>
 </html>
