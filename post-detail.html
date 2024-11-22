@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 상세 보기</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- 헤더 -->
+  <header>
+    <nav class="navbar">
+      <ul class="nav-left">
+        <li><a href="index.html">홈</a></li>
+        <li><a href="question-board.html">게시판</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 본문 -->
+  <main>
+    <section class="post-detail-container">
+      <h2 id="postTitle"></h2>
+      <p id="postContent"></p>
+      <small id="postDate"></small>
+      <div class="actions">
+        <button id="likeBtn">공감 👍 (<span id="likeCount">0</span>)</button>
+      </div>
+      <hr>
+      <h3>댓글</h3>
+      <div class="comments">
+        <ul id="commentList">
+          <!-- 댓글 목록 -->
+        </ul>
+      </div>
+      <div class="comment-form">
+        <textarea id="commentInput" placeholder="댓글을 입력하세요"></textarea>
+        <button onclick="addComment()">댓글 등록</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 스크립트 -->
+  <script>
+    let postId = null;
+
+    // 게시글 데이터 로드
+    function loadPost() {
+      const params = new URLSearchParams(window.location.search);
+      postId = params.get('id');
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      const post = posts[postId];
+
+      if (!post) {
+        alert('게시글을 찾을 수 없습니다.');
+        window.location.href = 'question-board.html';
+        return;
+      }
+
+      document.getElementById('postTitle').textContent = post.title;
+      document.getElementById('postContent').textContent = post.content;
+      document.getElementById('postDate').textContent = post.date;
+
+      // 좋아요 수 로드
+      const likeCount = post.likes || 0;
+      document.getElementById('likeCount').textContent = likeCount;
+
+      // 댓글 로드
+      const comments = post.comments || [];
+      const commentList = document.getElementById('commentList');
+      comments.forEach(comment => {
+        const li = document.createElement('li');
+        li.textContent = comment;
+        commentList.appendChild(li);
+      });
+    }
+
+    // 공감 기능
+    function likePost() {
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      const post = posts[postId];
+
+      post.likes = (post.likes || 0) + 1;
+      localStorage.setItem('posts', JSON.stringify(posts));
+      document.getElementById('likeCount').textContent = post.likes;
+    }
+
+    // 댓글 추가 기능
+    function addComment() {
+      const commentInput = document.getElementById('commentInput');
+      const comment = commentInput.value.trim();
+
+      if (!comment) {
+        alert('댓글을 입력하세요.');
+        return;
+      }
+
+      const posts = JSON.parse(localStorage.getItem('posts')) || [];
+      const post = posts[postId];
+
+      post.comments = post.comments || [];
+      post.comments.push(comment);
+      localStorage.setItem('posts', JSON.stringify(posts));
+
+      // 댓글 목록에 추가
+      const commentList = document.getElementById('commentList');
+      const li = document.createElement('li');
+      li.textContent = comment;
+      commentList.appendChild(li);
+
+      commentInput.value = '';
+    }
+
+    document.getElementById('likeBtn').addEventListener('click', likePost);
+    document.addEventListener('DOMContentLoaded', loadPost);
+  </script>
+</body>
+</html>
