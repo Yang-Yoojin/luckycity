@@ -8,12 +8,12 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- 헤더 -->
+  <!-- 헤더 --> 
   <header>
     <nav class="navbar">
       <ul class="nav-left">
         <li><a href="index.html">홈</a></li>
-        <li><a href="question-board.html">질문 게시판</a></li>
+        <li><a href="question-board.html">게시판</a></li>
       </ul>
       <ul class="nav-right">
         <li><a href="login.html">로그인</a></li>
@@ -36,11 +36,11 @@
   </div>
 
   <!-- 배너 -->
-  <section class="banner">
-      <img src="./사진/기본자세.png" class="full">
-      <div class="text-overlay">움직이는 배너로 구현할 예정</div>
-
-  </section>
+  <div class="slides">
+    <img src="./사진/기본자세.png" class="slide active">
+    <img src="./사진/만세자세.png" class="slide">
+    <img src="./사진/인사자세.png" class="slide">
+  </div>
 
   <!-- 날씨 검색 섹션 -->
 <section class="weather-section">
@@ -83,4 +83,5 @@
     <a href="educationVideo.html" class="btn-link">영상 바로가기</a>
   </div>
 </body>
+<script src="js/moveBanner.js"></script>
 </html>

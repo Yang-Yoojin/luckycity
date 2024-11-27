@@ -13,7 +13,7 @@
     <nav class="navbar">
       <ul class="nav-left">
         <li><a href="index.html">홈</a></li>
-        <li><a href="questions.html">질문 게시판</a></li>
+        <li><a href="question-board.html">게시판</a></li>
       </ul>
       <ul class="nav-right">
         <li><a href="login.html">로그인</a></li>
@@ -22,7 +22,7 @@
     </nav>
   </header>
   <section class="banner"><img src="./사진/크롭이미지.png" class="full">
-    <div class="text-overlay"><h5>겨울철안전사고대응및재난대피요령</h5></div></section>
+    <div class="text-overlay"><h5>교육 비디오</h5></div></section>
   <div class="search-bar">
     <input type="text" placeholder="검색어를 입력하세요">
     <button onclick="search()">검색</button>
@@ -33,43 +33,21 @@
     <!-- 중앙 비디오 플레이어 -->
     <div class="main-video">
       <video id="videoPlayer" controls>
-        <source src="videos/video1.mp4" type="video/mp4">
-        해당 브라우저는 비디오 태그를 지원하지 않습니다.
+        <source src="./video/gasFireCaution.mp4" type="video/mp4">
       </video>
     </div>
 
     <!-- 오른쪽 비디오 리스트 -->
     <aside class="video-list">
       <h3>영상 목록</h3>
-      <ul>
-        <li><a href="#" onclick="playVideo('videos/video1.mp4')">영상 1</a></li>
-        <li><a href="#" onclick="playVideo('videos/video2.mp4')">영상 2</a></li>
-        <li><a href="#" onclick="playVideo('videos/video3.mp4')">영상 3</a></li>
-        <li><a href="#" onclick="playVideo('videos/video4.mp4')">영상 4</a></li>
-        <li><a href="#" onclick="playVideo('videos/video5.mp4')">영상 5</a></li>
-        <li><a href="#" onclick="playVideo('videos/video6.mp4')">영상 6</a></li>
-      </ul>
+      <ul id="video-list"></ul> <!-- 동영상 목록을 여기서 동적으로 렌더링 -->
     </aside>
   </main>
 
-  <script>
-    // 비디오 플레이어에서 선택된 영상을 재생하는 함수
-    function playVideo(videoSrc) {
-      const player = document.getElementById("videoPlayer");
-      player.src = videoSrc;
-      player.play();
-    }
+  <div class="center-links">
+    <a href="quiztest.html" class="btn-link">퀴즈로 바로가기</a>
+  </div>
 
-    // 검색 기능
-    function search() {
-      const query = document.querySelector('.search-bar input').value;
-      window.location.href = `search-results.html?query=${encodeURIComponent(query)}`;
-    }
-  </script>
-
-    <div class="center-links">
-        <a href="quiztest.html" class="btn-link">퀴즈로 바로가기</a>
-    </div>
-
+  <script src="js/videojs.js"></script>
 </body>
 </html>

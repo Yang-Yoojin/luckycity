@@ -13,7 +13,7 @@
     <nav class="navbar">
       <ul class="nav-left">
         <li><a href="index.html">홈</a></li>
-        <li><a href="questions.html">질문 게시판</a></li>
+        <li><a href="question-board.html">질문 게시판</a></li>
       </ul>
       <ul class="nav-right">
         <li><a href="login.html">로그인</a></li>
@@ -30,8 +30,23 @@
     </div>
   </header>
 
-  <!-- 메인 콘텐츠 -->
-  <main class="quiz-page">
+   <!-- 메인 콘텐츠 -->
+   <main class="quiz-page">
+    <!-- 퀴즈 주제 선택 영역 -->
+    <aside class="quiz-list">
+      <h3>퀴즈 주제</h3>
+      <ul>
+        <li><a href="#" onclick="selectQuiz('coldwave')">한파 대처 방안</a></li>
+        <li><a href="#" onclick="selectQuiz('heavysnow')">폭설 대처 방안</a></li>
+        <li><a href="#" onclick="selectQuiz('snowaccidents')">눈길 사고 대처 방안</a></li>
+        <li><a href="#" onclick="selectQuiz('winterhike')">겨울철 산행</a></li>
+        <li><a href="#" onclick="selectQuiz('blackice')">블랙아이스 대처</a></li>
+        <li><a href="#" onclick="selectQuiz('electricity')">전기 안전 사고</a></li>
+        <li><a href="#" onclick="selectQuiz('gasFire')">가스 안전 사고</a></li>
+      </ul>
+    </aside>
+  
+    <!-- 퀴즈 영역 -->
     <div class="main-quiz">
       <div id="quizBox">
         <p id="quizQuestion">퀴즈 질문이 여기에 표시됩니다.</p>
@@ -44,17 +59,23 @@
         <button onclick="nextQuestion()" class="next-btn">다음</button>
       </div>
     </div>
-
-    <aside class="quiz-list">
-      <h3>퀴즈 주제</h3>
-      <ul>
-        <li><a href="#" onclick="selectQuiz('coldwave')">한파 대처 방안</a></li>
-        <li><a href="#" onclick="selectQuiz('heavysnow')">폭설 대처 방안</a></li>
-        <li><a href="#" onclick="selectQuiz('snowaccidents')">눈길 사고 대처 방안</a></li>
-      </ul>
-    </aside>
   </main>
 
   <script src="js/quiz.js"></script>
+  <script>
+    // URL에서 'quiz' 파라미터 가져오기
+    const params = new URLSearchParams(window.location.search);
+    const quizType = params.get('quiz'); // "heavysnow" 값 가져오기
+  
+    // 'quiz' 파라미터가 있으면 해당 퀴즈 로드
+    window.onload = () => {
+    if (quizType) {
+      selectQuiz(quizType); // URL 파라미터가 있으면 해당 퀴즈 로드
+    } else {
+      selectQuiz('winterhike'); // 기본 퀴즈
+    }
+  };
+  </script>
+  
 </body>
 </html>

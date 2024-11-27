@@ -12,7 +12,7 @@
     <nav class="navbar">
       <ul class="nav-left">
         <li><a href="index.html">홈</a></li>
-        <li><a href="questions.html">질문 게시판</a></li>
+        <li><a href="question-board.html">게시판</a></li>
       </ul>
       <ul class="nav-right">
         <li><a href="login.html">로그인</a></li>
@@ -20,82 +20,85 @@
       </ul>
     </nav>
   </header>
+  <!-- 검색 결과 제목 -->
+  <h2 id="search-heading"></h2>
 
-  <!-- 검색 결과 -->
-  <div class="search-bar">
-    <input type="text" placeholder="검색어를 입력하세요">
-    <button onclick="search()">검색</button>
-  </div>
+  <!-- 검색 결과 내용 -->
+  <div id="search-results"></div>
 
-<!-- 검색 결과 제목 -->
-<h2 id="search-heading">검색 결과</h2>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // URL에서 데이터 가져오기
+      const params = new URLSearchParams(window.location.search);
+      const query = params.get("query");
+      const resultsRaw = params.get("results");
+      const results = resultsRaw ? JSON.parse(resultsRaw) : null;
 
-<!-- 검색 결과 내용 (검색된 항목들을 여기에 표시) -->
-<div id="search-results">
-  <p>여기에 검색 결과가 표시됩니다.</p>
-</div>
+      const searchHeading = document.getElementById("search-heading");
+      const resultsDiv = document.getElementById("search-results");
 
-<!-- 퀴즈와 영상 섹션 -->
-<!-- search-results.html -->
-<section id="quizNVideo">
-  <div class="results-sections">
-    <!-- 관련 퀴즈 섹션 -->
-    <div class="quiz-section">
-      <h3>추천 퀴즈</h3>
-      <a id="recommended-quiz" href="#">관련 퀴즈로 이동</a>
-    </div>
+      // 검색 제목 업데이트
+      searchHeading.textContent = query ? `[ ${query} 에 대한 검색 결과 ]` : "검색 결과가 없습니다.";
 
-    <!-- 관련 영상 섹션 -->
-    <div class="video-section">
-      <h3>추천 영상</h3>
-      <video id="recommended-video" controls></video>
-    </div>
-  </div>
-</section>
+      // 검색 결과 렌더링
+      if (results && results.items && results.items.length > 0) {
+        results.items.forEach(item => {
+          const resultItem = document.createElement("div");
+          resultItem.classList.add("search-result-box");
 
-<script>
-  // 검색어에 따라 관련된 영상과 퀴즈 경로를 가져오기 위한 예시 데이터
-  const videos = {
-    "1": "videos/video1.mp4",
-    "2": "videos/video2.mp4",
-    "3": "videos/video3.mp4",
-    // 추가 비디오 경로
-  };
+          const titleElement = document.createElement("h3"); // 소제목
+          titleElement.textContent = item.title;
+          resultItem.appendChild(titleElement);
 
-  const quizzes = {
-    "1": "quizPage.html?quiz=1",
-    "2": "quizPage.html?quiz=2",
-    "3": "quizPage.html?quiz=3",
-    // 추가 퀴즈 경로
-  };
+          if (item.type === "text") {
+            const textParagraph = document.createElement("p");
+            textParagraph.innerHTML = item.content.replace(/\n/g, "<br>"); // 줄바꿈 처리
+            resultItem.appendChild(textParagraph);
+          } else if (item.type === "video") {
+            const videoElement = document.createElement("div");
 
-  const searchedQuery = new URLSearchParams(window.location.search).get("query");
+            // 동영상 삽입
+            const videoTag = document.createElement("video");
+            videoTag.src = item.link;
+            videoTag.controls = true;
+            videoTag.style.maxWidth = "100%";
+            videoElement.appendChild(videoTag);
 
-  // 관련 영상 설정
-  if (searchedQuery && videos[searchedQuery]) {
-    document.getElementById("recommended-video").src = videos[searchedQuery];
-  }
+            // 동영상 설명 추가
+            const videoDescription = document.createElement("p");
+            videoDescription.textContent = item.content;
+            videoElement.appendChild(videoDescription);
 
-  // 관련 퀴즈 링크 설정
-  if (searchedQuery && quizzes[searchedQuery]) {
-    document.getElementById("recommended-quiz").href = quizzes[searchedQuery];
-  }
-</script>
+            // 게시판 링크 버튼
+            const boardButton = document.createElement("button");
+            boardButton.classList.add("searched-button");
+            boardButton.textContent = "다른 영상도 보러가기";
+            boardButton.onclick = () => window.open(item.videoPage, "_blank");
+            videoElement.appendChild(boardButton);
 
-<script>
-  // URL에서 검색어를 받아와서 제목과 헤딩을 업데이트
-  const urlParams = new URLSearchParams(window.location.search);
-  const query = urlParams.get('query'); // ?query=검색어 형식으로 전달
+            resultItem.appendChild(videoElement);
+          } else if (item.type === "quiz") {
+            const quizElement = document.createElement("div");
+            quizElement.innerHTML = `
+              <p>${item.content}</p>
+              <button class="searched-button" onclick="window.open('${item.link}', '_blank')">퀴즈 풀러가기</button>
+            `;
+            resultItem.appendChild(quizElement);
+          } else if (item.type === "link") {
+            const linkElement = document.createElement("div");
+            linkElement.innerHTML = `
+              <p>${item.content}</p>
+              <a href="${item.link}" target="_blank">기상청 웹사이트 바로가기</a>
+            `;
+            resultItem.appendChild(linkElement);
+          }
 
-  if (query) {
-    document.title = `'${query}'에 대한 검색 결과`;
-    document.getElementById('search-heading').textContent = `'${query}'에 대한 검색 결과`;
-  }
-</script>
-</body>
-</html>
-
-
-  <script src="js/main.js"></script>
+          resultsDiv.appendChild(resultItem);
+        });
+      } else {
+        resultsDiv.innerHTML = `<p>'${query}'에 대한 검색 결과가 없습니다.</p>`;
+      }
+    });
+    </script>
 </body>
 </html>
